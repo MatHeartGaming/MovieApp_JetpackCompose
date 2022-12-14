@@ -1,7 +1,13 @@
 package it.spaarkly.movieapp.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.compose.*
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import it.spaarkly.movieapp.screens.details.DetailsScreen
+import it.spaarkly.movieapp.screens.home.HomeScreen
 
 @Composable
 fun MovieNavigation() {
@@ -10,7 +16,17 @@ fun MovieNavigation() {
         startDestination = MovieScreens.HomeScreen.name) {
         composable(MovieScreens.HomeScreen.name) {
             //Here we pass where this should lead us to
+            HomeScreen(navController = navController)
+        }
 
+        composable(MovieScreens.DetailScreen.name + "/{movie}",
+        arguments = listOf(navArgument("movie"){type = NavType.StringType})
+        ) { backStackEntry ->
+            DetailsScreen(navController = navController,
+                backStackEntry.arguments?.getString("movie")
+            )
         }
     }
 }
+
+
